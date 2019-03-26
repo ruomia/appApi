@@ -142,7 +142,7 @@ class Auth
         $auth_group = $this->config['auth_group'];
         // 执行查询
         $user_groups = Db::view($auth_group_access, 'uid,group_id')
-            ->view($auth_group, 'title,rules', "{$auth_group_access}.group_id={$auth_group}.id", 'LEFT')
+            ->view($auth_group, 'name,rules', "{$auth_group_access}.group_id={$auth_group}.id", 'LEFT')
             ->where("{$auth_group_access}.uid='{$uid}' and {$auth_group}.status='1'")
             ->select();
         $groups[$uid] = $user_groups ?: [];
