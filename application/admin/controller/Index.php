@@ -23,14 +23,14 @@ use think\facade\Request;
      */
     public function login()
     {
-        $url = Request::get('url', 'index/index');
-        // echo $url;
+        $url = Request::get('url');
+        echo $url;
         if (Request::isPost()) {
             $username = Request::post('username');
             $password = Request::post('password');
 
         }
-        return $this->view->fetch();
+        // return $this->view->fetch();
     }
 
     /**
