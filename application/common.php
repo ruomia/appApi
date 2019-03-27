@@ -10,3 +10,22 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+function ok($data)
+{
+    $result = [
+        'status' => 0,
+        'msg'    => 'ok',
+        'data' => $data
+    ];
+    return json_encode($result);
+}
+function error($msg, $data=[])
+{
+    $result = [
+        'status' => -1,
+        'msg'  => $msg,
+        'data' => $data      
+    ];
+    return json_encode($result);
+
+}
