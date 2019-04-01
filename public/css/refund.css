@@ -1,0 +1,64 @@
+.dqf_search_style {
+  margin-top: 30px;
+}
+.dqf_border {
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  height: 60px;
+  line-height: 36px;
+  margin-bottom: 20px;
+}
+.dqf_laydate-icon{
+  background-image: url(../images/icon.png);
+  background-repeat: no-repeat;
+  background-position: right center;
+  border: 1px solid #aaa;
+  margin-left:10px;
+  height: 30px;
+}
+.dqf_text_add{
+  margin-right: 15px;
+  width:250px;
+  height: 28px;
+}
+.btn_search{
+  background-color: #3795d3;
+  color: #fff!important;
+  margin-left: 15px;
+  outline:none!important;
+}
+tr th{
+  color: #307ecc;
+  text-align: center;
+}
+tr td{
+  text-align: center;
+}
+tr td:nth-child(3) a{
+  color: #ff6600;
+}
+input[type='checkbox']{
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  border: 1px solid #c9c9c9;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+input[type=checkbox]:checked{
+  background: url("/img/checkedbox.png")no-repeat center;
+}
+
+
+
+
+
+
+
+
+
+
+
+

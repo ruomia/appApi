@@ -15,6 +15,14 @@ Route::get('think', function () {
 Route::post('api/login', 'api/user/login');
 Route::post('api/register', 'api/user/register');
 Route::get('hello/:name', 'index/hello');
+
+Route::get('shop_index_home', 'shop/index/index_home');
+Route::get('shop_goods_manage', 'shop/goods/index');
+Route::get('shop_order', 'shop/order/order');
+Route::get('shop_refund', 'shop/order/refund');
+
+
+
 Route::group('api', function (){
 
 })->middleware(app\http\middleware\Check::class)

@@ -1,0 +1,100 @@
+.orange{
+  color: #ff892a;
+}
+.pink{
+  color: #c6699f;
+}
+.grey{
+  color: #777;
+}
+.red{
+  color: #dd5a43;
+}
+.blue{  
+  color: #478fca;
+}
+/*  */
+.dqf_big_container{
+  width: 100%; 
+  padding: 15px;
+}
+/* 左侧 */
+.dqf_left_box{
+  float: left;
+  width: 220px;
+  height: 100%;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+}
+.dqf_left_box .dqf_left_title{
+  background-color: #62a8d1;
+  height: 40px;
+  line-height: 40px;
+  padding-left: 12px;
+  color: #fff;
+  font-weight: lighter;
+  font-size: 17px;
+}
+.dqf_left_box >ul >li{
+  line-height: 34px;
+  margin-left: 10px;
+}
+/* 右侧 */
+.dqf_right_box{
+  width: 100%;
+}
+.dqf_tab_box{
+  float: left;
+  width: 75%;
+}
+.dqf_each_page_box{
+  margin: 20px 0 10px 0;
+}
+table{
+  text-align: center;
+}
+thead th{
+  text-align: center;
+}
+.btn-warning{
+  margin-left: 5px;
+  padding-left: 8px!important;
+  padding-right: 8px!important;
+}
+.btn-info{
+  margin-left: 5px;
+}
+.dqf_paping{
+  margin-top: -5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
