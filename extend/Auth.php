@@ -39,7 +39,7 @@ class Auth
         'auth_group' => 'auth_group', // 用户组数据表名
         'auth_group_access' => 'auth_group_access', // 用户-用户组关系表
         'auth_rule' => 'auth_rule', // 权限规则表
-        'auth_user' => 'user', // 用户信息表
+        'auth_user' => 'admin', // 用户信息表
     ];
     /**
      * 类架构函数
@@ -150,42 +150,47 @@ class Auth
         return $groups[$uid];
     }
     /**
-     * 获得权限列表
+     * 获得权限规则列表
      * @param integer $uid 用户id
-     * @param integer $type
+
      * return array
      */
-    protected function getAuthList($uid, $type)
+    protected function getRuleList($uid)
     {
-        static $_authList = []; //保存用户验证通过的权限列表
-        $t = implode(',', (array)$type);
-        if (isset($_authList[$uid . $t])) {
-            return $_authList[$uid . $t];
+        static $_rulelist = []; //保存用户验证通过的权限列表
+        // $t = implode(',', (array)$type);
+        // if (isset($_rulelist[$uid . $t])) {
+            // return $_rulelist[$uid . $t];
+        // }
+        if (isset($_rulelist[$uid])) {
+            return $_rulelist[$uid];
         }
-        if (2 == $this->config['auth_type'] && Session::has('_auth_list_' . $uid . $t)) {
-            return Session::get('_auth_list_' . $uid . $t);
+        if (2 == $this->config['auth_type'] && Session::has('_rule_list' . $uid)) {
+            return Session::get('_rule_list' . $uid);
         }
-        //读取用户所属用户组
-        $groups = $this->getGroups($uid);
-        $ids = []; //保存用户所属用户组设置的所有权限规则id
-        foreach ($groups as $g) {
-            $ids = array_merge($ids, explode(',', trim($g['rules'], ',')));
-        }
+        // 读取用户规则节点
+        $ids = $this->getRuleIds($uid);
 
-        $ids = array_unique($ids);
         if (empty($ids)) {
-            $_authList[$uid . $t] = [];
+            $_rulelist[$uid] = [];
             return [];
         }
 
+        // 筛选条件
+        $where = [
+            'status' => '1'
+        ];
+        if (!in_array('*', $ids))
+        {
+            $where['id'] = ['in', $ids];
+        }
         //读取用户组所有权限规则
         $rules = Db::name($this->config['auth_rule'])
-                    ->where('id','in',$ids)
-                    ->where('status',1)
-                    // ->where('type', $type)
-                    ->field('condition,name')->select();
+                    ->where($where)
+                    ->field('condition,name')
+                    ->select();
         //循环规则，判断结果。
-        $authList = []; //
+        $rulelist = []; //
         foreach ($rules as $rule) {
             if (!empty($rule['condition'])) {
                 //根据condition进行验证
@@ -194,19 +199,31 @@ class Auth
                 //dump($command); //debug
                 @(eval('$condition=(' . $command . ');'));
                 if ($condition) {
-                    $authList[] = strtolower($rule['name']);
+                    $rulelist[] = strtolower($rule['name']);
                 }
             } else {
                 //只要存在就记录
-                $authList[] = strtolower($rule['name']);
+                $rulelist[] = strtolower($rule['name']);
             }
         }
-        $_authList[$uid . $t] = $authList;
+        $_rulelist[$uid] = $rulelist;
         if (2 == $this->config['auth_type']) {
             //规则列表结果保存到session
-            Session::set('_auth_list_' . $uid . $t, $authList);
+            Session::set('_rule_list_' . $uid, $rulelist);
         }
-        return array_unique($authList);
+        return array_unique($rulelist);
+    }
+
+    public function getRuleIds($uid)
+    {
+        //读取用户所属用户组
+        $groups = $this->getGroups($uid);
+        $ids = []; //保存用户所属用户组设置的所有权限规则id
+        foreach ($groups as $g) {
+            $ids = array_merge($ids, explode(',', trim($g['rules'], ',')));
+        }
+        $ids = array_unique($ids);
+        return $ids;
     }
     /**
      * 获得用户资料
