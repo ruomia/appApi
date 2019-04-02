@@ -5,20 +5,16 @@ namespace app\shop\controller;
 use think\Controller;
 use think\Request;
 
-class Goods extends Controller
+class Recommend extends Controller
 {
     /**
      * 显示资源列表
      *
      * @return \think\Response
      */
-    public function goods()
+    public function index()
     {
-        return $this->fetch('goods');
-    }
-    public function goods_manage()
-    {
-        return $this->fetch('goods_manage');
+        return $this->fetch();
     }
 
     /**
