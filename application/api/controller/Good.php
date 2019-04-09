@@ -39,4 +39,5 @@ class Good extends Controller
         // var_dump($goods);
         return json_encode($goods);
     }
+    
 }

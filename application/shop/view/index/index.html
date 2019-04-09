@@ -17,7 +17,7 @@
 		<link href="./css/loaders.css" rel="stylesheet" type="text/css" />
 		<link href="./skin/blue/skin.css" rel="stylesheet" type="text/css" id="skin" />
 		<link href="./font/iconfont.css" rel="stylesheet" type="text/css" />
-		<title>商铺管理后台</title>
+		<title>{$shop_user.shop_name} 商铺管理后台</title>
 		<script src="./js/jquery-1.9.1.min.js" type="text/javascript"></script>
 		<script src="./js/jquery.cookie.js" type="text/javascript"></script>
 		<script src="./js/jquery.nicescroll.js" type="text/javascript"></script>
@@ -32,7 +32,7 @@
 		<div class="" id="situation">
 			<!--顶部样式-->
 			<div class="bk-herder relative header-section">
-				<div class="bk-herder-logo">后台管理系统</div>
+				<div class="bk-herder-logo">{$shop_user.shop_name} 后台管理系统</div>
 				<div class="operate-header">
 					<div class="" id="dropdown_menu">
 						<ul class="clearfix">
@@ -41,7 +41,7 @@
 					</div>
 					<div class="bk-settings-section">
 						<div class="headerUser">
-							<a class="user-info clickBombbox" href="javascript:void(0)" data-position="bottom" data-type="arrow"> 欢迎你,超级管理员 <i class="iconfont icon-iconfonticontrianglecopy"></i></a>
+							<a class="user-info clickBombbox" href="javascript:void(0)" data-position="bottom" data-type="arrow"> 欢迎你,{$shop_user.name} <i class="iconfont icon-iconfonticontrianglecopy"></i></a>
 							<div class="Bombbox">
 								<ul class="usercz menulist">
 									<li class="column-name">
@@ -88,7 +88,7 @@
 							</div>
 						</div>
 						<div class="notice-section clickBombbox">
-							<a href="javascript:void(0)" class="iconfont icon-xiazai41 notice-icon mode" data-id="2"><em class="amount">3</em></a>
+							<a href="javascript:void(0)" class="iconfont icon-xiazai41 notice-icon mode" data-id="2"><!--<em class="amount">3</em>--></a>
 
 							<div class="Bombbox Bombbox-info">
 								<ul class="tab_memu box padding10">
