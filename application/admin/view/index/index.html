@@ -37,6 +37,7 @@
   <script>
     $('.treeview').click(function () {
       let url = $(this).children('a').attr('href');
+      console.log(url)
       if (url != 'javascript:;') {
         $.ajax({
           url: url,

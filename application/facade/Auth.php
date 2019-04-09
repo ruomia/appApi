@@ -6,6 +6,6 @@ class Auth extends Facade
 {
     protected static function getFacadeClass()
     {
-        return 'app\common\library\Auth';
+        return 'app\admin\library\Auth';
     }
 }

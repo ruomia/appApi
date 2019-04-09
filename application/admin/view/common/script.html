@@ -22,3 +22,13 @@
 <!-- AdminLTE for demo purposes -->
 <script src="/assets/js/admin/demo.js"></script>
 <script src="/assets/layui.js"></script>
+<script>
+    layui.config({
+        base: '/module/'
+    }).extend({
+        treetable: 'treetable-lay/treetable'
+    }).use(['treetable'], function () {
+        var treetable = layui.treetable;
+
+    });
+</script>
