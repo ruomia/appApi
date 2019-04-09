@@ -1,7 +1,7 @@
 <?php
 namespace app\admin\controller;
 
-use think\Controller;
+use app\common\controller\Backend;
 use think\Validate;
 use think\facade\Request;
 use app\facade\Admin;
@@ -10,13 +10,22 @@ use app\facade\Admin;
  * @internal
  */
 
- class Index extends controller
+ class Index extends Backend
  {
+    protected $middleware = [
+        'Admin' => ['except' => ['login']]
+    ];
+    // protected $noNeedLogin = ['login'];
     /**
      * 后台首页
      */
     public function index()
     {
+        // $controllername = strtolower($this->request->controller());
+        // $actionname = strtolower($this->request->action());
+
+        // $path =  $controllername . '/1' . $actionname;
+        // return $path;
         // 左侧菜单
         list($menulist, $navlist, $fixdmenu, $referermenu) = Admin::getSidebar([
             'dashboard' => 'hot',

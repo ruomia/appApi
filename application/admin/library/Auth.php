@@ -118,6 +118,29 @@ class Auth extends \Auth
         }
         return [$menu, $nav, $nav, $selected, $referer];
     }
+
+    /**
+     * 检测当前控制器和方法是否匹配传递的数组
+     * 
+     * @param array $arr 需要验证权限的数组
+     * @return bool
+     */
+    public function match($arr = [])
+    {
+        $arr = is_array($arr) ? $arr : explode(',', $arr);
+        if (!$arr) {
+            return FALSE;
+        }
+
+        $arr = array_map('strtolower', $arr);
+        // 是否存在
+        if (in_array(strtolower(Request::action()), $arr) || in_array('*', $arr)) {
+            return TRUE;
+        }
+
+        // 没找到匹配
+        return FALSE;
+    }
     /**
      * 设置错误信息
      *

@@ -80,7 +80,7 @@ class Auth
             return true;
         }
         // 获取用户需要验证的所有有效规则列表
-        $authList = $this->getAuthList($uid, $type);
+        $authList = $this->getRuleList($uid, $type);
         // 判断是否是超级管理员
         if (in_array('*', $authList))
             return true;
@@ -175,7 +175,7 @@ class Auth
             $_rulelist[$uid] = [];
             return [];
         }
-
+        // dump($ids);die;
         // 筛选条件
         $where = [
             'status' => '1'
@@ -187,6 +187,7 @@ class Auth
         //读取用户组所有权限规则
         $rules = Db::name($this->config['auth_rule'])
                     ->where($where)
+                    // ->where('id','in',$ids)
                     ->field('condition,name')
                     ->select();
         //循环规则，判断结果。
