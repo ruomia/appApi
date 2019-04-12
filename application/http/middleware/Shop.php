@@ -10,8 +10,9 @@ class Shop
     {   
         // echo "1";
         $shop =Session::get("shop");
+        // dump($shop);
         if(!isset($shop)){
-            return redirect('/shop/login');
+            return redirect('/shop_login');
         }
         
         return $next($request);

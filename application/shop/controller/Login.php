@@ -49,7 +49,7 @@ class Login extends Controller
             }
 
         }
-        return $this->view->fetch();
+        return $this->view->fetch('index');
     }
 
     /**

@@ -72,7 +72,7 @@ layui.use('layer', function () {
 
             //此处做为ajax内部判断
             $.ajax({
-                url: '/shop/login/index',
+                url: '/shop_login',
                 type: 'POST',
                 data: { mobile: login, password: pwd, captcha: code },
                 dataType: 'json',
@@ -99,7 +99,7 @@ layui.use('layer', function () {
                             $('.success').fadeIn(1000);
                             $('.success').html(ret.msg);
                             setTimeout(function(){
-                                window.location.href="/shop";
+                                window.location.href="/shops";
                             }, 1000)
                             // //跳转操作
 

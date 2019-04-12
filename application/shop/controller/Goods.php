@@ -4,6 +4,10 @@ namespace app\shop\controller;
 
 use think\Controller;
 use think\Request;
+use app\shop\model\Good;
+use app\shop\model\Goods_sku;
+use app\shop\model\Goods_attribute;
+use think\facade\Session;
 
 class Goods extends Controller
 {
@@ -13,7 +17,10 @@ class Goods extends Controller
      * @return \think\Response
      */
     public function goods()
-    {
+    {   
+        $user = Session::get("shop");
+        $good = Good::where('id',$user['id'])->select();
+        dump($good);
         return $this->fetch('goods');
     }
     public function goods_manage()

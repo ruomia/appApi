@@ -332,13 +332,13 @@
 				weekday[5] = "星期六";
 				weekday[6] = "星期日";
         var d = new Date();
-        var h = d.getHours() > 10 ? d.getHours() : "0"+d.getHours();
-        var m = d.getMinutes() > 10 ? d.getMinutes() : "0"+d.getMinutes();
-        var s = d.getSeconds() > 10 ? d.getSeconds() : "0"+d.getSeconds(),
+        var h = d.getHours() >= 10 ? d.getHours() : "0"+d.getHours();
+        var m = d.getMinutes() >= 10 ? d.getMinutes() : "0"+d.getMinutes();
+        var s = d.getSeconds() >= 10 ? d.getSeconds() : "0"+d.getSeconds(),
 					str = '';
 				str += '<div class="time_display clearfix">';
-				str += '<span class="h com-time ">' + h + '</span>' + '<b class="">：</b>';
-				str += '<span class="m com-time ">' + m + '</span>' + '<b class="">：</b>';
+				str += '<span class="h com-time ">' + h + '</span>' + '<b class="">:</b>';
+				str += '<span class="m com-time ">' + m + '</span>' + '<b class="">:</b>';
 				str += '<span class="s com-time ">' + s + '</span></div>';
 				str += '<div class="date_display clearfix"><span class="years">' + d.getFullYear() + '年' + '</span>';
 				str += '<span class="mot">' + (d.getMonth() + 1) + '月' + '</span>';

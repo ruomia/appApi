@@ -13,7 +13,7 @@ class Index extends Controller
     public function index(){
         $shop = Session::get("shop");
         $this->assign('shop_user',$shop);
-        return $this->fetch();
+        return $this->fetch('index');
     }   
     public function index_home(){
         return $this->fetch('index_home');

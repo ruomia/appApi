@@ -16,6 +16,7 @@ Route::post('api/login', 'api/user/login');
 Route::post('api/register', 'api/user/register');
 Route::get('hello/:name', 'index/hello');
 
+Route::get('shops', 'shop/index/index');
 Route::get('shop_index_home', 'shop/index/index_home');
 Route::get('shop_goods_manage', 'shop/goods/goods_manage');
 Route::get('shop_goods', 'shop/goods/goods');
@@ -23,6 +24,8 @@ Route::get('shop_order', 'shop/order/order');
 Route::get('shop_refund', 'shop/order/refund');
 Route::get('shop_recommend', 'shop/recommend/index');
 Route::get('shop_coupon', 'shop/coupon/index');
+Route::get('shop_login', 'shop/login/index');
+Route::post('shop_login', 'shop/login/index');
 
 
 
