@@ -21,14 +21,12 @@
 <!-- <script src="/assets/js/admin/pages/dashboard2.js"></script> -->
 <!-- AdminLTE for demo purposes -->
 <script src="/assets/js/admin/demo.js"></script>
-<script src="/assets/layui.js"></script>
+<script src="/assets/layui/layui.js"></script>
 <script>
     layui.config({
-        base: '/module/'
+        base: '/assets/layui_exts/'
     }).extend({
-        treetable: 'treetable-lay/treetable'
-    }).use(['treetable'], function () {
-        var treetable = layui.treetable;
-
+        treetable: 'treetable-lay/treetable',
+        formSelects: 'formSelects/formSelects-v4',
     });
 </script>

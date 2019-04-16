@@ -11,30 +11,30 @@ use app\facade\Auth;
  */
 class Backend extends Controller
 {
-    protected $middleware = ['Admin'];
+    protected $middleware = ['Admin','AuthCheck'];
     /**
      * 无需登录的方法，同时也就不需要鉴权了
      * @var array
      */
-    protected $noNeedLogin = [];
+    // protected $noNeedLogin = [];
 
     /**
      * 无需鉴权的方法，但需要登录
      * @var array
      */
-    protected $noNeedRight = [];
+    // protected $noNeedRight = [];
 
-    public function initialize()
-    {
-        $moduleName = Request::module();
-        $controllerName = strtolower(Request::controller());
-        $actionName = strtolower(Request::action());
+    // public function initialize()
+    // {
+    //     $moduleName = Request::module();
+    //     $controllerName = strtolower(Request::controller());
+    //     $actionName = strtolower(Request::action());
 
-        $path = $controllerName . '/' . $actionName;
-        // $result = Auth::check($path, Session::get('admin.id'));
-        // return $result;
-        if(Auth::check($path, Session::get('admin.id'))) {
-            $this->error('你没有权限');
-        }
-    }
+    //     $path = $controllerName . '/' . $actionName;
+    //     // $result = Auth::check($path, Session::get('admin.id'));
+    //     // return $result;
+    //     if(Auth::check($path, Session::get('admin.id'))) {
+    //         $this->error('你没有权限');
+    //     }
+    // }
 }

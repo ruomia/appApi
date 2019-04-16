@@ -175,21 +175,14 @@ class Auth
             $_rulelist[$uid] = [];
             return [];
         }
-        // dump($ids);die;
-        // 筛选条件
-        $where = [
-            'status' => '1'
-        ];
-        if (!in_array('*', $ids))
-        {
-            $where['id'] = ['in', $ids];
-        }
+       
         //读取用户组所有权限规则
-        $rules = Db::name($this->config['auth_rule'])
-                    ->where($where)
-                    // ->where('id','in',$ids)
-                    ->field('condition,name')
-                    ->select();
+        $rules = Db::name($this->config['auth_rule'])->where('status',1);
+        if (!in_array('*', $ids)) {
+            $rules = $rules->where('id','in',$ids);
+        }
+        $rules = $rules->field('condition,name')->select();
+    
         //循环规则，判断结果。
         $rulelist = []; //
         foreach ($rules as $rule) {

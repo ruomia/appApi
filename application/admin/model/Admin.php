@@ -8,4 +8,9 @@ class Admin extends Model
 {
     protected $table = 'admin';
     
+    public function group()
+    {
+        return $this->belongsToMany('AuthGroup','auth_group_access', 
+            'group_id', 'uid');
+    }
 }

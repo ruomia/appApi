@@ -17,7 +17,9 @@
 <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
 <link rel="stylesheet" href="/assets/css/skins/_all-skins.min.css">
-<link rel="stylesheet" href="/assets/css/layui.css" media="all">
+<link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="/assets/layui_exts/formSelects/formSelects-v4.css" media="all">
+
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -29,3 +31,22 @@
 <!-- Google Font -->
 <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+<style>
+  .layui-form-label,
+  .layui-form-checkbox * {
+    /* -webkit-box-sizing: content-box; */
+    /* -moz-box-sizing: border-box; */
+    box-sizing: content-box;
+  }
+  /* 树状结构的图标样式 */
+  .auth-leaf {
+    width: 16px;
+    height: 17px;
+  }
+  .layui-table-tips-c:before {
+    position: relative;
+    right: 0px;
+    top: -3px;
+  }
+</style>

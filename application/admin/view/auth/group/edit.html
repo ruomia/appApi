@@ -1,0 +1,42 @@
+  <form class="layui-form" style="width:90%;" action="/admin/auth/group/edit?id={$row.id}" method="POST">
+    <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <div class="layui-form-item">
+      <label class="layui-form-label">父级</label>
+      <div class="layui-input-block">
+        <select name="pid" lay-filter="aihao">
+          {foreach $groupdata as $k => $v}
+          <option value="{$k}" {if $row.pid == $k} selected {/if}>{$v|raw}</option>
+          {/foreach}
+        </select>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">名称</label>
+      <div class="layui-input-block">
+        <input type="text" name="name" value="{$row.name}" placeholder="请输入" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">选择权限</label>
+      <div class="layui-input-block">
+        <input type="checkbox" name="" lay-filter="checkAll" title="全选">
+        <input type="checkbox" name="" lay-filter="showAll" title="展开">
+        <div id="LAY-auth-tree-index"></div>
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label">状态</label>
+      <div class="layui-input-block">
+        <input type="radio" name="status" value="1" title="正常" checked> <input type="radio" name="status" value="0"
+          title="隐藏"> </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-input-block">
+        <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+      </div>
+    </div>
+    <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+  </form>
+ 

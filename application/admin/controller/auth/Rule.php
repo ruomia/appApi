@@ -10,7 +10,7 @@ use Tree;
 class Rule extends Backend
 {   
     protected $rulelist = [];
-    protected function initialize()
+    public function initialize()
     {
         $rulelist =  AuthRule::select()->toArray();
         Tree::instance()->init($rulelist);
@@ -26,20 +26,13 @@ class Rule extends Backend
     }
     public function index()
     {
-        // $rule = AuthRule::select();
         if(Request::isAjax() && Request::has('type')) {
-            // $limit = Request::request('limit');
-            // $page = Request::request('page');
-            // $pid = Request::request('pid') ? : '0';
+           
             $total = AuthRule::count();
-            // $total = count($this->rulelist);
-            // $list = $this->rulelist;
-            // $rule = AuthRule::paginate(10);
+   
             $rule = AuthRule::select()
                             ->toArray();
-            // $total = count($rule);
-            // return $rule;
-            // dump($rule);die;
+        
             $result =  [
                 'code' => 0,
                 'msg'  => '',
@@ -48,7 +41,6 @@ class Rule extends Backend
             ];
             return json($result);
         }
-        // $this->view->assign('data', $rule);
 
         return $this->view->fetch();
     }
@@ -60,7 +52,7 @@ class Rule extends Backend
     {
         if (Request::isPost())
         {
-            $params = Request::post();
+            $params = Request::post("row/a");
             if ($params)
             {
                 if (!$params['ismenu'] && !$params['pid'])
@@ -74,7 +66,27 @@ class Rule extends Backend
                 if(!$result) {
                     $this->error($validate->getError());
                 }
-                AuthRule::create($params);
+                $result = AuthRule::create($params);
+                // 如果下一级规则，就使用批量添加
+                if($children = Request::post("children/a")) 
+                {
+                    $childrenList = [];
+                    $params['ismenu'] = 0;
+                    $params['pid'] = $result->id;
+                    $params['icon'] = 'fa fa-circle-o';
+                    foreach($children as $k => $v) 
+                    {
+                        if ($v === 'on') {
+                            $params['name'] = $result->name . '/' . $k;
+                            $params['title'] = ucfirst($k);
+
+                            $childrenList[] = $params;
+                        }
+                    }
+                    // AuthRule::create($childrenList);
+                    $authRule = new AuthRule;
+                    $authRule->saveAll($childrenList);
+                }
                 $this->success();
             }
             $this->error();
@@ -138,7 +150,10 @@ class Rule extends Backend
             // $delIds = array_unique($delIds);
             // dump($delIds);
         //     $count = AuthRule::where('id', 'in', $delIds)->delete();
-            $count =AuthRule::destroy($ids);
+            // $count =AuthRule::destroy($ids);
+            $count = AuthRule::where('id', $ids)
+                            ->whereOr('pid', $ids)
+                            ->delete();
             if ($count)
             {
                 $this->success();

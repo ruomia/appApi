@@ -1,31 +1,35 @@
-layui.use(['treetable','form'], function () {
+layui.config({
+  base: '/assets/layui_exts/'
+}).extend({
+  authtree: 'authtree/authtree',
+});
+layui.use(['treetable', 'authtree'], function () {
   var treetable = layui.treetable;
   var table = layui.table;
   let form = layui.form;
-
+  let authtree = layui.authtree;
+  let tree = '#LAY-auth-tree-index';
   let renderTable = function () {
     layer.load(2);
     treetable.render({
-      treeColIndex: 1,//树形图标显示在第几列
+      treeColIndex: 2,//树形图标显示在第几列
       treeSpid: 0,//最上级的父级id
       treeIdName: 'id',//id字段的名称
       treePidName: 'pid',//pid字段的名称
-      treeDefaultClose: true,//是否默认折叠
-      treeLinkage: false,//父级展开时是否自动展开所有子级
+      treeDefaultClose: false,//是否默认折叠
+      treeLinkage: true,//父级展开时是否自动展开所有子级
       elem: '#demo'
       , height: 'auto'
-      , url: '/admin/auth/rule/index?type=2' //数据接口
+      , url: '/admin/auth/group/index?table=1' //数据接口
       , toolbar: '#toolbarDemo'
       // , page: true //开启分页
       , cols: [[ //表头
         // {field: 'checkout', fixed: 'left'}
         { field: 'id', title: 'ID', width: 80 }
-        // , { field: 'pid', title: 'PID', width: 80 }
-        , { field: 'title', title: '规则名称', }
-        , { field: 'icon', title: '图标', width: 60,align:'center', templet: '<div><i class="{{d.icon}}"></i></div>' }
-        // , { field: 'condition', title: '条件', width: 80, sort: true }
+        , { field: 'pid', title: 'PID', width: 80 }
+        , { field: 'name', title: '名称', }
         , {
-          field: 'status', title: '状态', width: 80, templet: function (d) {
+          field: 'status', title: '状态', width: 100, templet: function (d) {
             if (d.status == 1) {
               return '<span class="layui-badge-dot layui-bg-green"></span>&nbsp;&nbsp;<span style="color: #5FB878">正常</span>'
             } else {
@@ -33,8 +37,6 @@ layui.use(['treetable','form'], function () {
             }
           }
         }
-        , { field: 'name', title: '规则', width: 200 }
-        , { field: 'ismenu', title: '菜单', width: 85, templet: '#switchTpl', unresize: true }
         , { fixed: 'right', title: '操作', width: 160, align: 'center', toolbar: '#barDemo' } //这里的toolbar值是模板元素的选择器
       ]],
       done: function () {
@@ -50,12 +52,13 @@ layui.use(['treetable','form'], function () {
     let layEvent = obj.event;
     if (layEvent === 'add') {
       $.ajax({
-        url: '/admin/auth/rule/add',
+        url: '/admin/auth/group/add',
         type: 'get',
         dataType: 'json',
-        success:function(res) {
-          // console.log(res);
-          openPage(res)
+        success: function (res) {
+          openPage(res);
+          // 渲染树状结构
+          authTree(authtree);
         }
       })
     }
@@ -84,11 +87,13 @@ layui.use(['treetable','form'], function () {
       })
     } else if (layEvent === 'edit') { //编辑
       $.ajax({
-        url: '/admin/auth/rule/edit?id=' + data.id,
+        url: '/admin/auth/group/edit?id=' + data.id,
         type: 'get',
         dataType: 'json',
-        success:function(res){
-          openPage(res)
+        success: function (res) {
+          openPage(res);
+          // 渲染树状结构
+          authTree(authtree, data.pid, data.id);
         }
       })
     }
@@ -98,12 +103,12 @@ layui.use(['treetable','form'], function () {
     // layer.tips(this.value + ' ' + this.name + ': ' + JSON.stringify(obj), obj.othis);
     let value = obj.elem.checked ? 1 : 0;
     $.ajax({
-      url: '/admin/auth/rule/edit?id='+this.value,
+      url: '/admin/auth/rule/edit?id=' + this.value,
       type: 'post',
-      data: {ismenu: value},
+      data: { ismenu: value },
       dataType: 'json',
-      success:function(ret) {
-        if(ret.code === 1) {
+      success: function (ret) {
+        if (ret.code === 1) {
           renderTable();
         } else {
           layer.msg(ret.msg);
@@ -111,35 +116,75 @@ layui.use(['treetable','form'], function () {
       }
     })
   });
-  //监听提交
+  form.on('select(aihao)', function (data) {
+    authTree(authtree, data.value);
+  });
+  form.on('checkbox(checkAll)', function (data) {
+    if (data.elem.checked) {
+      authtree.checkAll(tree)
+    } else {
+      authtree.uncheckAll(tree)
+    }
+  });
+  form.on('checkbox(showAll)', function (data) {
+    if (data.elem.checked) {
+      authtree.showAll(tree)
+    } else {
+      authtree.closeAll(tree)
+    }
+  });
   form.on('submit(*)', function (data) {
-    let loadIndex = layer.load(1, {
-      shade: [0.1, '#fff']
-    });
     $.ajax({
-      url: data.form.action,
-      type: 'post',
+      url: dada.form.action,
+      type: 'POST',
       data: data.field,
       dataType: 'json',
-      success: function (ret) {
-        if (ret.code === 1) {
+      success: function (res) {
+        // console.log(data);
+        if (res.code === 1) {
           layer.msg('操作成功！');
+          parent.layer.close(index)
         } else {
-          layer.close(loadIndex)
-          layer.msg(ret.msg);
+          layer.msg(res.msg)
         }
       }
     })
     return false;
-  });
-  function openPage(str){
+  })
+
+  function openPage(str) {
     layer.open({
       type: 1,
       area: ['60%', '75%'],
       content: str,
-      success:function(res){
+      success: function (res) {
         form.render();
       }
     })
   }
 });
+// 弹出表单
+
+function authTree(authtree, pid = '', id = '') {
+  $.ajax({
+    url: '/admin/auth/group/getAuthRule?pid=' + pid + '&id=' + id,
+    dataType: 'json',
+    success: function (data) {
+      var trees = authtree.listConvert(data.data.list, {
+        primaryKey: 'id'
+        , startPid: 0
+        , parentKey: 'pid'
+        , nameKey: 'title'
+        , valueKey: 'id'
+        , checkedKey: data.data.checkedId
+      });
+      // console.log(data)
+      // 如果后台返回的不是树结构，请使用 authtree.listConvert 转换
+      authtree.render('#LAY-auth-tree-index', trees, {
+        inputname: 'rules[]',
+        layfilter: 'lay-check-auth',
+        autowidth: true,
+      });
+    }
+  });
+}
