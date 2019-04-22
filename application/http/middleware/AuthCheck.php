@@ -2,7 +2,7 @@
 
 namespace app\http\middleware;
 
-use app\facade\Auth;
+use app\facade\Admin;
 use think\facade\Request;
 use think\facade\Session;
 class AuthCheck
@@ -15,7 +15,7 @@ class AuthCheck
         $path = str_replace('.', '/', $controllerName) . '/' . $actionName;
         // $result = Auth::check($path, Session::get('admin.id'));
         // return $result;
-        if(!Auth::check($path, Session::get('admin.id'))) {
+        if(!Admin::check($path, Session::get('admin.id'))) {
             return redirect('index/index');
             // return false;
         }

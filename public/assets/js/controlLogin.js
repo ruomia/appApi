@@ -53,7 +53,7 @@ layui.use('layer', function () {
 
         } else {
             //认证中..
-            fullscreen();
+            // fullscreen(); // 全屏
             $('.login').addClass('test'); //倾斜特效
             setTimeout(function () {
                 $('.login').addClass('testtwo'); //平移特效

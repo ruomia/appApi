@@ -1,0 +1,37 @@
+<form class="layui-form" lay-filter="from" style="width:90%;" action="/admin/carousel/add" method="POST">
+  <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+  <div class="layui-form-item">
+    <label class="layui-form-label">图片</label>
+    <div class="layui-input-block">
+      <button type="button" class="layui-btn" id="uploadImage">
+        <i class="layui-icon">&#xe67c;</i>上传图片
+      </button>
+      <div class="layui-upload-list">
+        <img class="layui-upload-img" id="demo1" width="215">
+        <p id="demoText"></p>
+      </div>
+
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">权重</label>
+    <div class="layui-input-block">
+      <input type="number" name="weigh" value="" placeholder="0" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">状态</label>
+    <div class="layui-input-block">
+      <input type="radio" name="status" value="1" title="正常" checked />
+      <input type="radio" name="status" value="0" title="隐藏" />
+    </div>
+  </div>
+  <input type="hidden" name="image">
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+  <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+</form>

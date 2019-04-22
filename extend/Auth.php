@@ -175,7 +175,6 @@ class Auth
             $_rulelist[$uid] = [];
             return [];
         }
-       
         //读取用户组所有权限规则
         $rules = Db::name($this->config['auth_rule'])->where('status',1);
         if (!in_array('*', $ids)) {

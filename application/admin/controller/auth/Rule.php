@@ -66,8 +66,12 @@ class Rule extends Backend
                 if(!$result) {
                     $this->error($validate->getError());
                 }
+                // 表单提交的数据类型都是字符串
+                if($params['ismenu'] === '0') {
+                    $params['icon'] = 'fa fa-circle-o';
+                }
                 $result = AuthRule::create($params);
-                // 如果下一级规则，就使用批量添加
+                // 如果有下一级规则，就使用批量添加
                 if($children = Request::post("children/a")) 
                 {
                     $childrenList = [];
@@ -103,7 +107,6 @@ class Rule extends Backend
         if (Request::isPost())
         {
             $params = Request::post();
-            // dump($params);die;
             if($params)
             {
                 if(count($params) == 1) {
@@ -141,16 +144,6 @@ class Rule extends Backend
     {
         if($ids)
         {
-            // $delIds = [];
-            // foreach (explode(',', $ids) as $k => $v)
-            // {
-            //     $delIds = array_merge($delIds, Tree::instance()->getChildrenIds($v, TRUE));
-            // }
-            // dump($ids);
-            // $delIds = array_unique($delIds);
-            // dump($delIds);
-        //     $count = AuthRule::where('id', 'in', $delIds)->delete();
-            // $count =AuthRule::destroy($ids);
             $count = AuthRule::where('id', $ids)
                             ->whereOr('pid', $ids)
                             ->delete();

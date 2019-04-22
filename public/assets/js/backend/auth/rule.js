@@ -2,7 +2,7 @@ layui.use(['treetable','form'], function () {
   var treetable = layui.treetable;
   var table = layui.table;
   let form = layui.form;
-
+  let formIndex;
   let renderTable = function () {
     layer.load(2);
     treetable.render({
@@ -113,9 +113,6 @@ layui.use(['treetable','form'], function () {
   });
   //监听提交
   form.on('submit(*)', function (data) {
-    let loadIndex = layer.load(1, {
-      shade: [0.1, '#fff']
-    });
     $.ajax({
       url: data.form.action,
       type: 'post',
@@ -124,8 +121,9 @@ layui.use(['treetable','form'], function () {
       success: function (ret) {
         if (ret.code === 1) {
           layer.msg('操作成功！');
+          layer.close(formIndex)
+          renderTable()
         } else {
-          layer.close(loadIndex)
           layer.msg(ret.msg);
         }
       }
@@ -133,7 +131,7 @@ layui.use(['treetable','form'], function () {
     return false;
   });
   function openPage(str){
-    layer.open({
+    formIndex = layer.open({
       type: 1,
       area: ['60%', '75%'],
       content: str,

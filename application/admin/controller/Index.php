@@ -13,7 +13,7 @@ use app\facade\Admin;
  class Index extends Backend
  {
     protected $middleware = [
-        'Admin' => ['except' => ['login']]
+        'Admin' => ['except' => ['login','upload']]
     ];
     // protected $noNeedLogin = ['login'];
     /**
@@ -91,5 +91,30 @@ use app\facade\Admin;
     public function test()
     {
         return $this->view->fetch();
+    }
+
+    public function upload()
+    {
+        $file = Request::file('file');
+        // 移动到框架应用根目录/uploads/目录下
+        $info = $file->move('uploads');
+        if($info){
+            // 成功上传后，获取上传信息
+            $result =  [
+                'code' => 0,
+                'msg'  => '',
+                'data' => [
+                    'src' => '/uploads/' . $info->getSaveName()
+                ]
+            ];
+            return json($result);
+        }else{
+            $result =  [
+                'code' => 1,
+                'msg'  => $file->getError(),
+                'data' => ''
+            ];
+            return json($result);
+        }
     }
  }
