@@ -3,6 +3,7 @@
 namespace app\http\middleware;
 
 use \Firebase\JWT\JWT as JWTCHECK;
+use think\facade\Env;
 class Check
 {
     public function handle($request, \Closure $next)
@@ -17,18 +18,17 @@ class Check
         $jwt = substr($request->server('HTTP_AUTHORIZATION'), 7);
         try
         {
-            $request->jwt = JWTCHECK::decode($jwt, Env::get('jwt.key'), array('HS256'));
+            $jwt = JWTCHECK::decode($jwt, Env::get('jwt.key'), array('HS256'));
+            $request->user_id = $jwt->id;
             return $next($request);
         }
         catch(\Exception $e)
         {
             return json([
                 'code'=>'403',
-                'message'=>'HTTP/1.1 403 Forbidden'
+                // 'message'=>'HTTP/1.1 403 Forbidden'
+                'message' => $e->getMessage()
             ]);
         }
-      
-    
-        return $next($request);
     }
 }

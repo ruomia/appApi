@@ -1,73 +1,69 @@
 <?php 
 namespace app\api\controller;
 
-use think\Controller;
+use app\common\controller\Api;
 use think\Validate;
-use \Firebase\JWT\JWT;
 use think\Db;
-use think\facade\Env;
-use app\facade\Auth;
-class User extends Controller 
+use app\common\model\User as U;
+use think\Request;
+class User extends Api 
 {
-    public function login()
-    {
-        $account = $this->request->request('account');
-        $password = $this->request->request('password');
-        if (!$account || !$password)
-        {
-            $this->error('Invalid parameters');
-        }
-        $ret = Auth::login($account, $password);
-        if ($ret)
-        {
-            // 把用户的信息保存到令牌（JWT）中，然后把令牌发给前端
-            $now = time();
-            // 定义令牌中的数据
-            $data = [
-                'iat' => $now,
-                'exp' => Env::get('jwt.expire'),
-                'id' => $ret['id'],
-            ];
-            // 生成令牌
-            $jwt = JWT::encode($data, Env::get('jwt.key'));
-            // 发给前端
-            return ok([
-                'ACCESS_TOKEN' => $jwt
-            ]);
+    protected $middleware = [
+        'Check' => ['except'=> ['login','register']]
+    ];
 
-        }
-        else 
-        {
-            return error(Auth::getError());
-        }
-        
-    }
-    public function register()
+    /**
+     * 获取用户信息
+     */
+    public function index(Request $req)
     {
-        $username = $this->request->request('username');
-        $password = $this->request->request('password');
-        $email = $this->request->request('email');
-        $mobile = $this->request->request('mobile');
-        if (!$username || !$password)
-        {
-            return error('Invalid parameters');
-        }
-        if ($email && !Validate::is($email, "email"))
-        {
-            return error('Email is incorrect');
-        }
-        if ($mobile && !Validate::regex($mobile, "^1\d{10}$"))
-        {
-            return error('Mobile is incorrent');
-        }
-        $ret = Auth::register($username, $password, $email, $mobile, []);
-        if ($ret)
-        {
-            return ok($ret);
-        }
-        else 
-        {
-            return error($this->auth->getError());
-        }   
+        $row = U::field('id,nickname,avatar,collection,follow')
+                ->where('id', $req->user_id)->find();
+        if(!$row)
+            return error('No Results were found');
+        
+        return success($row);
     }
+    /**
+     * 收藏商品
+     */
+    public function collection(Request $req)
+    {
+        $row = U::field('id')->with(['goods'=>function($query){
+            $query->field('goods_name,logo,price');
+        }])->get($req->user_id);
+        // trace(Request::jwt->id, 'info user_id');
+        if(!$row)
+            return error('No Results were found');
+        
+        return success($row);
+    }
+    /**
+     * 关注店铺
+     */
+    public function follow(Request $req)
+    {
+        $row = U::field('id')->with(['shop'=>function($query){
+            $query->field('shop_name,image');
+        }])->get($req->user_id);
+        // trace(Request::jwt->id, 'info user_id');
+        if(!$row)
+            return error('No Results were found');
+        
+        return success($row);
+    }
+
+    /**
+     * 获取用户信息
+     */
+    public function info()
+    {
+        $row = U::get($this->request->user_id);
+
+        if(!$row) 
+            return error('该用户不存在');
+            
+        return success($row);
+    }
+    
 }

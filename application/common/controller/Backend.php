@@ -117,7 +117,7 @@ class Backend extends Controller
                     $this->error($e->getMessage());
                 }
             }
-            $this->error(__('Parameter %s can not be empty', ''));
+            $this->error('Parameter %s can not be empty', '');
         }
         return $this->view->fetch();
     }
@@ -158,7 +158,7 @@ class Backend extends Controller
                     $this->error($e->getMessage());
                 }
             }
-            $this->error(__('Parameter %s can not be empty', ''));
+            $this->error('Parameter %s can not be empty', '');
         }
         $this->view->assign("row", $row);
         return $this->view->fetch();
@@ -183,9 +183,9 @@ class Backend extends Controller
             if ($count) {
                 $this->success();
             } else {
-                $this->error(__('No rows were deleted'));
+                $this->error('No rows were deleted');
             }
         }
-        $this->error(__('Parameter %s can not be empty', 'ids'));
+        $this->error('Parameter %s can not be empty', 'ids');
     }
 }

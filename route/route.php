@@ -12,8 +12,8 @@
 Route::get('think', function () {
     return 'hello,ThinkPHP5!';
 });
-Route::post('api/login', 'api/user/login');
-Route::post('api/register', 'api/user/register');
+// Route::post('api/login', 'api/user/login');
+// Route::post('api/register', 'api/user/register');
 Route::get('hello/:name', 'index/hello');
 
 Route::get('shops', 'shop/index/index');
