@@ -6,6 +6,7 @@ use \Firebase\JWT\JWT;
 use app\facade\Auth;
 use think\facade\Env;
 use app\common\model\Goods;
+use think\facade\Cache;
 class Index extends Controller 
 {
     public function index()
@@ -47,31 +48,35 @@ class Index extends Controller
     }
     public function register()
     {
-        $username = $this->request->request('username');
-        $password = $this->request->request('password');
-        $email = $this->request->request('email');
         $mobile = $this->request->request('mobile');
-        if (!$username || !$password)
+        $code = $this->request->request('code');
+        if ($code !== Cache::get('code-'.$account))
         {
-            return error('Invalid parameters');
+            return error('验证码错误');
         }
-        if ($email && !Validate::is($email, "email"))
-        {
-            return error('Email is incorrect');
+        $validate = Validate::make([
+            'mobile' => 'require|mobile|unique:user,mobile'
+        ]);
+        $data = [
+            'mobile' => $mobile
+        ];
+        if(!$validate->check($data)) {
+            return error($validate->getError());
         }
-        if ($mobile && !Validate::regex($mobile, "^1\d{10}$"))
-        {
-            return error('Mobile is incorrent');
-        }
-        $ret = Auth::register($username, $password, $email, $mobile, []);
-        if ($ret)
-        {
-            return ok($ret);
-        }
-        else 
-        {
-            return error($this->auth->getError());
-        }   
+        $user = User::create($data);
+        $now = time();
+        // 定义令牌中的数据
+        $data = [
+            'iat' => $now,
+            'exp' => $now + Env::get('jwt.expire'),
+            'id' => $user->id,
+        ];
+        // 生成令牌
+        $jwt = JWT::encode($data, Env::get('jwt.key'));
+        // 发给前端
+        return success([
+            'ACCESS_TOKEN' => $jwt
+        ]);
     }
     public function search()
     {
