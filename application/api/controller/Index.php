@@ -7,6 +7,7 @@ use app\facade\Auth;
 use think\facade\Env;
 use app\common\model\Goods;
 use think\facade\Cache;
+use think\facade\Validate;
 class Index extends Controller 
 {
     public function index()
