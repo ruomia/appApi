@@ -14,4 +14,9 @@ class Category extends Model
         $result = generateTree($data);
         return $result;
     }
+    public static function getTopLists()
+    {
+        $result = self::where('pid', 0)->select();
+        return $result;
+    }
 }

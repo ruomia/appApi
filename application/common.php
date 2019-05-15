@@ -22,7 +22,7 @@ function ok($data=[])
 function success($data=[])
 {
     $result = [
-        'status' => 0,
+        'code' => 0,
         'msg'    => 'ok',
         'data' => $data
     ];
@@ -31,7 +31,7 @@ function success($data=[])
 function error($msg, $data=[])
 {
     $result = [
-        'status' => -1,
+        'code' => -1,
         'msg'  => $msg,
         'data' => $data      
     ];

@@ -5,9 +5,13 @@ use think\Controller;
 use \Firebase\JWT\JWT;
 use app\facade\Auth;
 use think\facade\Env;
-
+use app\common\model\Goods;
 class Index extends Controller 
 {
+    public function index()
+    {
+        return 'aaaa';
+    }
     public function login()
     {
         $account = $this->request->request('account');
@@ -68,5 +72,11 @@ class Index extends Controller
         {
             return error($this->auth->getError());
         }   
+    }
+    public function search()
+    {
+        $keyWord = $this->request->get('keyword');
+        $res = Goods::getSearchList($keyWord);
+        return success($res);
     }
 }

@@ -8,6 +8,14 @@ use app\common\model\Goods;
 class Category extends Controller
 {
 
+    /**
+     * 获取顶级分类
+     */
+    public function getTopLists()
+    {
+        $list = C::getTopLists();
+        return success($list);
+    }
     public function index()
     {
         $list = C::getTree();
@@ -29,4 +37,5 @@ class Category extends Controller
         
         return ok($row);
     }
+    
 }

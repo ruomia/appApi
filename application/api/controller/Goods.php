@@ -49,15 +49,20 @@ class Goods extends Controller
      */
     public function details($goods_id = NULL)
     {
+        // $result = G::getGoodsDetails($goods_id);
+        // if(!$result) {
+        //     return error('没有找到该商品');
+        // } 
+        // return ok($result);
         $row = G::alias('a')
                 ->field('a.*,group_concat(b.image) path')
                 ->where('a.id', $goods_id)
                 ->join('goods_img b', 'a.id = b.goods_id')
                 ->find();
         if(!$row)
-            return error('No Results were found');
+            return error('没有找到该商品');
         $row['path'] = explode(',', $row['path']);
-        return ok($row);
+        return success($row);
     }
 
     /**
@@ -68,30 +73,19 @@ class Goods extends Controller
     public function attribute($goods_id = NULL)
     {
         // 获取属性值ID
-        $attr = Sku::field('attribute')->where('goods_id',$goods_id)->select();
-        // $attr = $attr->toArray();
-        $attrList = [];
-        foreach($attr as $k => $v){
-            $attrList = array_merge(explode(',',$v['attribute']), $attrList);
-        }
-        $attrList = array_unique($attrList);
-        $row = Value::alias('a')
-                    ->field("group_concat(concat(a.id,':',a.value)) value,name")
-                    ->where('a.id','in',$attrList)
-                    ->join('attribute_name b', 'a.name_id = b.id')
-                    ->group('b.id')
-                    ->select();
-
-        foreach($row as $k => $v) {
-            // $row[$k] = explode(':',explode(',',$v['value']));
-            $value = explode(',', $v['value']);
-            foreach($value as $k1 => $v1) {
-                $value[$k1] = explode(':', $v1);
-            }
-            $row[$k]['value'] = $value;
-        }
-        if(!$row)
+        $result = Sku::getAttrLists($goods_id);
+        if(!$result)
             return error('No Results were found');
-        return ok($row);
+        return ok($result);
+    }
+
+    public function getSkuInfo($skus = NULL)
+    {
+        $result = Sku::field('id,goods_id,stock,price,name')
+            ->where('attribute', $skus)
+            ->find();
+        if(!$result)
+            return error('No Results were found');
+        return success($result);
     }
 }
