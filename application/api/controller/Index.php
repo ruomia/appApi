@@ -50,7 +50,7 @@ class Index extends Controller
     {
         $mobile = $this->request->request('mobile');
         $code = $this->request->request('code');
-        if ($code !== Cache::get('code-'.$account))
+        if ($code !== Cache::get('code-'.$mobile))
         {
             return error('验证码错误');
         }
