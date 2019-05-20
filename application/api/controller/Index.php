@@ -51,20 +51,24 @@ class Index extends Controller
     public function register()
     {
         $mobile = $this->request->request('mobile');
+        $password = $this->request->request('password');
         $code = $this->request->request('code');
         if ($code !== Cache::get('code-'.$mobile))
         {
             return error('验证码错误');
         }
         $validate = Validate::make([
-            'mobile' => 'require|mobile|unique:user,mobile'
+            'mobile' => 'require|mobile|unique:user,mobile',
+            'password' => 'require|min:6|max:30'
         ]);
         $data = [
-            'mobile' => $mobile
+            'mobile' => $mobile,
+            'password' => $password
         ];
         if(!$validate->check($data)) {
             return error($validate->getError());
         }
+        $data['password'] = md5($data['password']);
         $user = User::create($data);
         $now = time();
         // 定义令牌中的数据
